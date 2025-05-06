@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemical Report Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+	/* General styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f4f4f9;
+  color: #2c3e50;
+}
+
+nav {
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-btn {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.nav-btn:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.nav-btn i {
+  font-size: 1.2rem;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+#toggleTheme {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#toggleTheme:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode #toggleTheme {
+  background-color: #34495e;
+  color: #ffffff;
+  border-color: #4b5e73;
+}
+
+.dark-mode #toggleTheme:hover {
+  background-color: #2c3e50;
+  color: #ffffff;
+  border-color: #4b5e73;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.search-input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 250px;
+  transition: border-color 0.2s ease;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+}
+
+.search-btn {
+  background-color: #3498db;
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 600;
+}
+
+.search-btn:hover {
+  background-color: #2980b9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-btn i {
+  font-size: 1.2rem;
+}
+
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+#chemicalList {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
+#chemicalList table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+}
+
+#chemicalList table thead tr {
+  background-color: #3498db;
+  color: #ffffff;
+  text-align: left;
+}
+
+#chemicalList table th,
+#chemicalList table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #ddd;
+}
+
+#chemicalList table th {
+  font-weight: 600;
+}
+
+#chemicalList table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.dark-mode nav {
+  background-color: #1e1e1e;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid #333;
+}
+
+.dark-mode .nav-btn {
+  background-color: #2c3e50;
+  color: #ffffff;
+  border-color: #4b5e73;
+}
+
+.dark-mode .nav-btn:hover {
+  background-color: #34495e;
+  color: #ffffff;
+  border-color: #4b5e73;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .search-input {
+  background-color: #2c3e50;
+  color: #ffffff;
+  border-color: #4b5e73;
+}
+
+.dark-mode .search-input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+}
+
+.dark-mode .search-btn {
+  background-color: #3498db;
+  color: #ffffff;
+}
+
+.dark-mode .search-btn:hover {
+  background-color: #2980b9;
+}
+
+.dark-mode #chemicalList table {
+  background-color: #1e1e1e;
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+  border-color: #333;
+}
+
+.dark-mode #chemicalList table thead tr {
+  background-color: #34495e;
+  color: #ffffff;
+  border-bottom-color: #4b5e73;
+}
+
+.dark-mode #chemicalList table th,
+.dark-mode #chemicalList table td {
+  border-bottom-color: #444;
+  color: #eee;
+}
+
+.dark-mode #chemicalList table tbody tr:hover {
+  background-color: #2c3e50;
+}
+
+.export-btn {
+  background-color: #2ecc71;
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 600;
+  margin-left: 1rem;
+}
+
+.export-btn:hover {
+  background-color: #27ae60;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+  </style>
+</head>
+<body>
+  <main>
+    <div class="report-selector">
+      <label for="reportType">Select Report:</label>
+      <select id="reportType" onchange="switchReport()">
+        <option value="usage">Chemical Usage Report</option>
+        <option value="inventory">Current Chemical Inventory</option>
+        <option value="insight">Usage Summary (Insights)</option>
+      </select>
+      <input type="text" id="reportSearch" placeholder="Search chemical..." oninput="searchReports()" />
+    </div>
+
+    <!-- Chemical Usage Report -->
+    <div id="usageReport" class="report-section">
+      <h2>Chemical Usage Report</h2>
+      <button onclick="exportToCSV('usage')">Export CSV</button>
+      <button onclick="clearLogs()">Clear Logs</button>
+      <button onclick="toggleColumns()">Hide/Show Time & User</button>
+      <table id="usageTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>User</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Current Chemical Inventory -->
+    <div id="inventoryReport" class="report-section" style="display:none;">
+      <h2>Current Chemical Inventory</h2>
+      <button onclick="exportToCSV('inventory')">Export CSV</button>
+      <button onclick="renewStock()">Renew Stock</button>
+      <table id="inventoryTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- Usage Summary (Insights) -->
+    <div id="insightReport" class="report-section" style="display:none;">
+      <h2>Usage Summary (Insights)</h2>
+      <button onclick="refreshInsights()">Refresh</button>
+      <button onclick="exportToCSV('insight')">Export Insights</button>
+      <table id="insightTable">
+        <thead>
+          <tr>
+            <th>Chemical</th>
+            <th>Total Usage</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="inventory-report.js"></script>
+</body>
+</html>

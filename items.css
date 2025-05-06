@@ -1,0 +1,380 @@
+body, nav {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px 30px;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.nav-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.nav-btn:active {
+    background-color: #004080;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transform: translateY(0);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.user-info i {
+    margin-right: 8px;
+    color: #007bff;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    padding: 12px 18px;
+    border: 1px solid #ced4da;
+    border-radius: 8px 0 0 8px;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 250px;
+}
+
+.search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.search-btn {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+    outline: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.search-btn:active {
+    background-color: #004080;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transform: translateY(0);
+}
+
+.toggle-btn {
+    background: none;
+    border: none;
+    color: #6c757d;
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+    transition: color 0.3s ease, transform 0.1s ease;
+    padding: 10px;
+}
+
+.toggle-btn:hover {
+    color: #495057;
+    transform: scale(1.1);
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    padding: 30px;
+    margin-top: 20px;
+}
+
+h2 {
+    color: #007bff;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+#chemicalList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.chemical-item {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e0e0e0;
+}
+
+.chemical-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chemical-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    letter-spacing: 0.5px;
+}
+
+.quantity-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.quantity-controls label {
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.quantity-controls input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    font-size: 1.1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.quantity-controls input[type="number"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.quantity-controls button {
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    outline: none;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    width: 100%; /* Make button width match input */
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.quantity-controls button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+
+.quantity-controls button:active {
+    background-color: #004080;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transform: translateY(0);
+}
+
+.available-quantity {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #2a2a2e;
+    color: #f8f9fa;
+}
+
+.dark-mode nav {
+    background-color: #252529;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+    border-bottom-color: #3b3b3b;
+}
+
+.dark-mode .nav-btn {
+    background-color: #4299e1;
+    color: #fff;
+    border-color: #4299e1;
+}
+
+.dark-mode .nav-btn:hover {
+    background-color: #3182ce;
+    border-color: #3182ce;
+}
+
+.dark-mode .nav-btn:active {
+    background-color: #2a69ac;
+    border-color: #2a69ac;
+}
+
+.dark-mode .user-info {
+    background-color: #323236;
+    color: #eee;
+}
+
+.dark-mode .user-info i {
+    color: #4299e1;
+}
+
+.dark-mode .search-input {
+    background-color: #323236;
+    color: #fff;
+    border-color: #4a5568;
+}
+
+.dark-mode .search-input:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+}
+
+.dark-mode .search-btn {
+    background-color: #4299e1;
+    color: #fff;
+    border-color: #4299e1;
+}
+
+.dark-mode .search-btn:hover {
+    background-color: #3182ce;
+    border-color: #3182ce;
+}
+
+.dark-mode .search-btn:active {
+    background-color: #2a69ac;
+    border-color: #2a69ac;
+}
+
+.dark-mode .toggle-btn {
+    color: #a0aec0;
+}
+
+.dark-mode .toggle-btn:hover {
+    color: #f56565;
+}
+
+.dark-mode .chemical-item {
+    background-color: #323236;
+    color: #eee;
+    border-color: #4a5568;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .chemical-item:hover {
+    box-shadow: 0 6px 15px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .chemical-name {
+    color: #fff;
+}
+
+.dark-mode .quantity-controls label,
+.dark-mode .available-quantity {
+    color: #ccc;
+}
+
+.dark-mode .quantity-controls input[type="number"] {
+    background-color: #4a5568;
+    color: #fff;
+    border-color: #718096;
+    box-sizing: border-box;
+}
+
+.dark-mode .quantity-controls input[type="number"]:focus {
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+}
+
+.dark-mode .quantity-controls button {
+    background-color: #4299e1;
+    color: #fff;
+    border-color: #4299e1;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.dark-mode .quantity-controls button:hover {
+    background-color: #3182ce;
+    border-color: #3182ce;
+}
+
+.dark-mode .quantity-controls button:active {
+    background-color: #2a69ac;
+    border-color: #2a69ac;
+}
