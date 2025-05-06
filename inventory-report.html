@@ -73,6 +73,30 @@
     </div>
   </main>
 
+  <!-- Theme Toggle Iframe -->
+  <iframe 
+    src="toggle.html" 
+    id="themeToggleFrame"
+    style="position: fixed; top: 15px; right: 15px; width: 40px; height: 40px; border: none; background: transparent;"
+  ></iframe>
+
   <script src="inventory-report.js"></script>
+
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+      const state = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+      document.getElementById('themeToggleFrame').contentWindow.postMessage(state, '*');
+      localStorage.setItem('site-theme', state);
+    }
+
+    // On load, restore theme
+    document.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('site-theme');
+      if (saved === 'dark') {
+        document.body.classList.add('dark-theme');
+      }
+    });
+  </script>
 </body>
 </html>
