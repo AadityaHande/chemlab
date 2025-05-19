@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    background: #007bff;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+nav input {
+    flex: 1;
+    max-width: 400px;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+nav button {
+    background-color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+nav button:hover {
+    background-color: #e0e0e0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    padding: 20px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#chemicalList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Increased minmax width */
+    gap: 20px; /* Increased gap */
+    padding: 10px;
+}
+
+.chemical-item {
+    background: white;
+    padding: 20px; /* Increased padding */
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    display: flex; /* added */
+    flex-direction: column; /* added */
+    justify-content: space-between; /* added */
+    min-height: 150px; /* added */
+}
+
+.chemical-item:hover {
+    transform: translateY(-5px);
+}
+
+.chemical-item h3 {
+    font-size: 24px; /* Increased font size */
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.chemical-item p {
+    font-size: 16px; /* Increased font size */
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.chemical-item .label {
+    font-weight: bold;
+    color: #3498db;
+}
+
+.chemical-item .value {
+    color: #2c3e50;
+}
+
+
+.hidden {
+    display: none;
+}
+
+.chemical-item.error-item {
+    background-color: #ffe0e0;
+    border: 1px solid #ffb3b3;
+}
+
+.chemical-item.result-item{
+    background-color: #f0f0f0;
+}

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Items Inventory Management</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f4f4f9;
+        color: #2c3e50;
+      }
+
+      nav {
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .nav-btn {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        font-family: "Segoe UI", sans-serif;
+        font-weight: 600;
+        color: #2c3e50;
+      }
+
+      .nav-btn:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-btn i {
+        font-size: 1.2rem;
+      }
+
+      .nav-buttons {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      #toggleTheme {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease,
+          box-shadow 0.3s ease;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      #toggleTheme:hover {
+        background-color: #f0f0f0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .dark-mode #toggleTheme {
+        background-color: #34495e;
+        color: #ffffff;
+        border-color: #4b5e73;
+      }
+
+      .dark-mode #toggleTheme:hover {
+        background-color: #2c3e50;
+        color: #ffffff;
+        border-color: #4b5e73;
+        box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+      }
+
+      .user-info {
+        display: none; /* Hide user info */
+      }
+
+      .user-info i {
+        font-size: 1.5rem;
+        color: #7f8c8d;
+      }
+
+      .user-info span {
+        font-size: 0.875rem;
+        color: #555555;
+      }
+
+      .user-info span:first-child {
+        font-weight: 600;
+        margin-right: 0.5rem;
+      }
+
+      .search-container {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .search-input {
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        width: 250px;
+        transition: border-color 0.2s ease;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+      }
+
+      .search-btn {
+        background-color: #3498db;
+        color: #ffffff;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        font-family: "Segoe UI", sans-serif;
+        font-weight: 600;
+      }
+
+      .search-btn:hover {
+        background-color: #2980b9;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .search-btn i {
+        font-size: 1.2rem;
+      }
+
+      .container {
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .container h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      #chemicalList {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      #chemicalList table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        background-color: #ffffff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 0.5rem;
+      }
+
+      #chemicalList table thead tr {
+        background-color: #3498db;
+        color: #ffffff;
+        text-align: left;
+      }
+
+      #chemicalList table th,
+      #chemicalList table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #ddd;
+      }
+
+      #chemicalList table th {
+        font-weight: 600;
+      }
+
+      #chemicalList table tbody tr:hover {
+        background-color: #f0f0f0;
+      }
+
+      .dark-mode {
+        background-color: #121212;
+        color: #ffffff;
+      }
+
+      .dark-mode nav {
+        background-color: #1e1e1e;
+        box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid #333;
+      }
+
+      .dark-mode .nav-btn {
+        background-color: #2c3e50;
+        color: #ffffff;
+        border-color: #4b5e73;
+      }
+
+      .dark-mode .nav-btn:hover {
+        background-color: #34495e;
+        color: #ffffff;
+        border-color: #4b5e73;
+        box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+      }
+
+      .dark-mode .search-input {
+        background-color: #2c3e50;
+        color: #ffffff;
+        border-color: #4b5e73;
+      }
+
+      .dark-mode .search-input:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
+      }
+
+      .dark-mode .search-btn {
+        background-color: #3498db;
+        color: #ffffff;
+      }
+
+      .dark-mode .search-btn:hover {
+        background-color: #2980b9;
+      }
+
+      .dark-mode .chemical-item {
+        background-color: #1e1e1e;
+        color: #ffffff;
+        border-color: #333;
+      }
+
+      .dark-mode .chemical-name {
+        color: #ffffff;
+      }
+
+      .dark-mode .available-quantity {
+        color: #81c784;
+      }
+
+      .dark-mode #chemicalList table {
+        background-color: #1e1e1e;
+        box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+        border-color: #333;
+      }
+
+      .dark-mode #chemicalList table thead tr {
+        background-color: #34495e;
+        color: #ffffff;
+        border-bottom-color: #4b5e73;
+      }
+
+      .dark-mode #chemicalList table th,
+      .dark-mode #chemicalList table td {
+        border-bottom-color: #444;
+        color: #eee;
+      }
+
+      .dark-mode #chemicalList table tbody tr:hover {
+        background-color: #2c3e50;
+      }
+      .export-btn {
+        background-color: #2ecc71;
+        color: #ffffff;
+        padding: 0.75rem 1.25rem;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        font-family: "Segoe UI", sans-serif;
+        font-weight: 600;
+        margin-left: 1rem;
+      }
+
+      .export-btn:hover {
+        background-color: #27ae60;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <button class="nav-btn" onclick="goBack()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+      </div>
+      <div class="nav-right">
+        <button class="export-btn" onclick="exportChemicalsToExcel()">
+          <i class="fas fa-file-excel"></i> Export to Excel
+        </button>
+      </div>
+    </nav>
+    <div class="container">
+      <h2>Items List</h2>
+      <div id="chemicalList" class="chemical-list"></div>
+    </div>
+    <script>
+      const chemicals = [
+        "Asbestos Sheet",
+        "B.O.D. Bottle",
+        "Burette 10mL",
+        "Burette",
+        "Burette Stand with Clip",
+        "BOD Bottle",
+        "Beaker 1000mL",
+        "Beaker 500mL",
+        "Beaker 250mL",
+        "Beaker 100mL",
+        "Beaker 25mL",
+        "Beaker (some)",
+        "Buchner Funnel (Small)",
+        "Buchner Funnel (Big)",
+        "Capillary Tube",
+        "Conical Flask 1000mL",
+        "Conical Flask 500mL",
+        "Conical Flask 250mL",
+        "Conical Flask 100mL",
+        "Conical Flask with Gland",
+        "Conical Flask with a Glee",
+        "Conical Flask Wide Side",
+        "Conical Flask (Tarsm)",
+        "Crucible with Lid",
+        "Congo Red Paper",
+        "Cotton Bleached",
+        "Dessicator",
+        "Drop Bottle (Glass)",
+        "Conical Flask (Nominal)",
+        "Column Chromatography Flask",
+        "Filter Flask (500mL)",
+        "Fire Bucket with Sand",
+        "Evaporating Dish",
+        "First Aid Box",
+        "Funnel",
+        "Filter Paper",
+        "Funnel 100mL",
+        "Filter Flask 100mL",
+        "Glass Funnel (Small Sink)",
+        "Glass Column",
+        "Gas Pipe",
+        "Glass Rod",
+        "Crucible (Couch Type)",
+        "ICE Spot",
+        "ID Jar",
+        "IL Flask",
+        "Landberger’s Apparatus",
+        "Iodine Flask (Glass 2500mL)",
+        "Measuring Cylinder",
+        "Notice Board",
+        "GIRAS 500mL",
+        "Ostwald Viscometer",
+        "Plastic Funnel (Big)",
+        "Plastic Lid",
+        "Measuring Cylinder (Plastic 100mL)",
+        "Measuring Cylinder 10mL",
+        "Measuring Cylinder 25mL",
+        "Measuring Cylinder 50mL",
+        "Measuring Cylinder 100mL",
+        "Pipette 25mL",
+        "Pipette 100mL",
+        "Plastic Sample Bottle",
+        "Pestle and Mortar",
+        "Plastic Funnel (Small)",
+        "Plastic Beaker 500mL",
+        "Plastic Beaker 1L",
+        "Pipe Clay Triangle",
+        "Petri Dish",
+        "Plastic Beaker 2500mL",
+        "Plastic Beaker 250mL",
+        "Plastic Water Bath",
+        "Plastic Tray",
+        "Rubber Cork",
+        "Reagent Bottle",
+        "Spatula (Metal)",
+        "Test Tube Holder",
+        "Reflux Condenser",
+        "Spatula (Plastic)",
+        "Test Tube Stand",
+        "Rubber Tubing for Burette",
+        "Steel Water Bath",
+        "Thiele Tube",
+        "Sodium Fusion Tube",
+        "Scissors",
+        "TLC Jar",
+        "Round Bottom Flask (2 Neck)",
+        "Specific Gravity Bottle",
+        "Test Tube Box",
+        "Round Bottom Flask 100mL",
+        "Thermometer (110°C)",
+        "Stalagmometer",
+        "Thermometer (300°C)",
+        "Separating Funnel",
+        "Separating Funnel (M/S)",
+        "Test Tube Brush 6",
+        "Turmeric Paper",
+        "Volumetric Flask 100mL",
+        "Volumetric Flask 250mL",
+        "Volumetric Flask 500mL",
+        "Volumetric Flask 1000mL",
+        "Volumetric Flask (Plastic 1000mL)",
+        "Volumetric Flask (Plastic 500mL)",
+        "Volumetric Flask (Glass 100mL)",
+        "Viscometer 10mL",
+        "Viscometer 25mL",
+        "Wire Gauze",
+        "White Can (5L)",
+        "Wash Bottle (500mL Plastic)",
+        "Whatman Filter Paper",
+        "Watch Glass",
+      ];
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadChemicals();
+        setupThemeToggle();
+      });
+
+      function loadChemicals() {
+        const list = document.getElementById("chemicalList");
+        if (!list) return;
+
+        list.innerHTML = "";
+        const table = document.createElement("table");
+        table.innerHTML = `
+    <thead>
+      <tr>
+        <th>Chemical Name</th>
+        <th>Available Quantity</th>
+        <th>Last Updated Date</th>
+        <th>Last Updated Time</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+
+        const tbody = table.querySelector("tbody");
+
+        chemicals.forEach((chemical) => {
+          if (chemical.trim() === "") return;
+
+          let storedData = localStorage.getItem(chemical);
+          let quantity = "0",
+            date = "-",
+            time = "-";
+
+          if (storedData) {
+            try {
+              const parsed = JSON.parse(storedData);
+              quantity = parsed.quantity || "0";
+              date = parsed.lastUpdatedDate || "-";
+              time = parsed.lastUpdatedTime || "-";
+            } catch (e) {
+              console.warn(`Invalid data for ${chemical}`, storedData);
+            }
+          }
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+      <td>${chemical}</td>
+      <td>${quantity}</td>
+      <td>${date}</td>
+      <td>${time}</td>
+    `;
+          tbody.appendChild(row);
+        });
+
+        list.appendChild(table);
+      }
+
+      function updateChemical(chemical, quantity) {
+        const data = {
+          quantity: quantity.toString(),
+          lastUpdatedDate: new Date().toLocaleDateString(),
+          lastUpdatedTime: new Date().toLocaleTimeString(),
+        };
+        localStorage.setItem(chemical, JSON.stringify(data));
+      }
+
+      function setupThemeToggle() {
+        const toggleButton = document.getElementById("toggleTheme");
+        if (toggleButton) {
+          toggleButton.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+          });
+        }
+      }
+
+      function goBack() {
+        window.history.back();
+      }
+
+      function exportChemicalsToExcel() {
+        let csv =
+          "Item Name,Available Quantity,Last Updated Date,Last Updated Time\n";
+
+        chemicals.forEach((chemical) => {
+          if (chemical.trim() === "") return;
+
+          let quantity = "0",
+            date = "-",
+            time = "-";
+
+          try {
+            const rawData = localStorage.getItem(chemical);
+            if (rawData) {
+              const data = JSON.parse(rawData);
+              quantity = data.quantity || "0";
+              date = data.lastUpdatedDate || "-";
+              time = data.lastUpdatedTime || "-";
+            }
+          } catch (e) {
+            console.warn(`Failed to parse JSON for ${chemical}`, e);
+          }
+
+          // Escape any special characters in chemical names and wrap date/time in quotes to treat them as text
+          const safeChemical = `"${chemical.replace(/"/g, '""')}"`;
+          const safeDate = `"${date}"`;
+          const safeTime = `"${time}"`;
+
+          // Append row to CSV
+          csv += `${safeChemical},${quantity},${safeDate},${safeTime}\n`;
+        });
+
+        console.log("Generated CSV:\n" + csv); // Debugging line
+
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.setAttribute("href", URL.createObjectURL(blob));
+        link.setAttribute("download", "Items_inventory.csv");
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    </script>
+  </body>
+</html>

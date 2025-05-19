@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemical Report Dashboard</title>
+  <link rel="stylesheet" href="inventory-report.css">
+</head>
+<body>
+  <nav>
+    <div class="nav-left">
+      <button class="nav-btn" onclick="goBack()">
+        <i class="fas fa-arrow-left"></i> Back
+      <!-- </button>
+      <div class="nav-buttons"> 
+        <button id="toggleTheme" class="toggle-btn">
+          <i class="fa-solid fa-cloud-sun"></i>
+        </button>
+      </div>
+    </div>
+    <div class="user-info" id="user-info">
+      <button class="nav-btn" onclick="manualEdit()">Edit</button>
+      <button class="nav-btn" onclick="generateReport()">Reports</button>
+    </div> -->
+    </div>
+  </nav>
+  <main>
+    <div class="report-selector">
+      <label for="reportType">Select Report:</label>
+      <select id="reportType" onchange="switchReport()">
+        <option value="usage">Chemical Usage Report</option>
+        <option value="inventory">Current Chemical Inventory</option>
+        <option value="insight">Usage Summary (Insights)</option>
+      </select>
+      <input type="text" id="reportSearch" placeholder="Search chemical..." oninput="searchReports()" />
+    </div>
+
+    <!-- Current Chemical Inventory -->
+    <div id="inventoryReport" class="report-section" style="display:none;">
+      <h2>Current Chemical Inventory</h2>
+      <button onclick="exportToCSV('inventory')">Export CSV</button>
+      <button onclick="renewStock()">Renew Stock</button>
+      <div class="table-wrapper">
+        <table id="inventoryTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Chemical Usage Report -->
+    <div id="usageReport" class="report-section">
+      <h2>Chemical Usage Report</h2>
+      <button onclick="exportToCSV('usage')">Export CSV</button>
+      <button onclick="clearLogs()">Clear Logs</button>
+      <button onclick="toggleColumns()">Hide/Show Time & User</button>
+      <div class="table-wrapper">
+        <table id="usageTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>User</th>
+            <th>Date</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Current Chemical Inventory
+    <div id="inventoryReport" class="report-section" style="display:none;">
+      <h2>Current Chemical Inventory</h2>
+      <button onclick="exportToCSV('inventory')">Export CSV</button>
+      <button onclick="renewStock()">Renew Stock</button>
+      <div class="table-wrapper">
+        <table id="inventoryTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Qty</th>
+            <th>Unit</th>
+            <th>Last Updated</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+      </div>
+    </div> -->
+
+    <!-- Usage Summary (Insights) -->
+    <div id="insightReport" class="report-section" style="display:none;">
+      <h2>Usage Summary (Insights)</h2>
+      <button onclick="refreshInsights()">Refresh</button>
+      <button onclick="exportToCSV('insight')">Export Insights</button>
+      <div class="table-wrapper">
+        <table id="insightTable">
+        <thead>
+          <tr>
+            <th>Chemical</th>
+            <th>Total Usage</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  
+  <script src="inventory-report.js"></script>
+</body>
+</html>

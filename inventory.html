@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chemical Inventory Management</title>
+    <link rel="stylesheet" href="inventory.css" />
+    <script src="inventory.js" defer></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <button class="nav-btn" onclick="goBack()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <div class="nav-buttons"> 
+          <button id="toggleTheme" class="toggle-btn">
+            <i class="fa-solid fa-cloud-sun"></i>
+          </button>
+        </div>
+      </div>
+      <div class="user-info" id="user-info">
+        <!-- <button class="nav-btn" onclick="manualEdit()">Edit</button> -->
+        <button class="nav-btn" onclick="generateReport()">Reports</button>
+      </div>
+      <div class="search-container">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search chemicals..."
+        />
+        <button class="search-btn" onclick="searchChemicals()">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+    </nav>
+
+    <!-- Bulk Import Modal -->
+    <div id="bulkImportModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" onclick="closeModal('bulkImportModal')">&times;</span>
+        <h3>Bulk Import CSV</h3>
+        <textarea id="bulkImportText" placeholder="Paste CSV: Name,Qty,Unit"></textarea>
+        <button onclick="processBulkImport()">Import</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Chemical List</h2>
+
+      <div class="controls">
+        <button id="exportAll" class="export-btn">Export Inventory</button>
+        <!-- <button id="bulkImport" class="import-btn">Bulk Import</button> -->
+        <button id="showMass" class="filter-btn">Show Mass Only</button>
+        <button id="showVol" class="filter-btn">Show Volume Only</button>
+        <button onclick="filterByType('all')" class="filter-btn">Show All</button>
+        <button onclick="undoLast()" class="undo-btn">Undo</button>
+      </div>
+
+      <div id="chemicalList" class="chemical-list"></div>
+    </div>
+  </body>
+</html>
