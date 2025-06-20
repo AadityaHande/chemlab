@@ -3,11 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider,
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence,
-  sendPasswordResetEmail
+  GoogleAuthProvider
 } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
 import {
   doc,
@@ -31,10 +27,11 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
+    // Always set new user as guest on manual registration
     await setDoc(doc(db, "users", user.uid), {
       name: username,
       email: user.email,
-      role: "teacher"
+      role: "guest"
     });
 
     window.location.href = "./homepage.html";
@@ -48,26 +45,22 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
   const rememberMe = document.getElementById("rememberMe").checked;
-  const rememberUsername = document.getElementById("rememberUsername").checked;
 
   try {
-    const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
-    await setPersistence(auth, persistence);
+    const persistence = rememberMe
+      ? firebase.auth.Auth.Persistence.LOCAL
+      : firebase.auth.Auth.Persistence.SESSION;
 
+    await auth.setPersistence(persistence);
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
     const userRef = doc(db, "users", user.uid);
     const userSnap = await getDoc(userRef);
-    if (!userSnap.exists()) {
-      await setDoc(userRef, { role: "teacher" });
-    }
 
-    // Save or clear remembered username
-    if (rememberUsername) {
-      localStorage.setItem("rememberedUsername", email);
-    } else {
-      localStorage.removeItem("rememberedUsername");
+    // Only set role if not already defined (should never happen here, but safe)
+    if (!userSnap.exists()) {
+      await setDoc(userRef, { role: "guest" });
     }
 
     window.location.href = "./homepage.html";
@@ -76,29 +69,31 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
   }
 });
 
-// Google Login/Register
+// Google Login/Register (No role overwrite)
 const provider = new GoogleAuthProvider();
 
-async function handleGoogleAuth(isRegister = false) {
+async function handleGoogleAuth() {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
     const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    // Only set name/email (merge true prevents overwriting role)
     await setDoc(userRef, {
       name: user.displayName,
-      email: user.email,
-      role: "teacher"
+      email: user.email
     }, { merge: true });
 
     window.location.href = "./homepage.html";
   } catch (error) {
-    alert((isRegister ? "Google Registration" : "Google Login") + " Failed: " + error.message);
+    alert("Google Authentication Failed: " + error.message);
   }
 }
 
-document.getElementById("googleLoginBtn").addEventListener("click", () => handleGoogleAuth(false));
-document.getElementById("googleRegisterBtn").addEventListener("click", () => handleGoogleAuth(true));
+document.getElementById("googleLoginBtn").addEventListener("click", handleGoogleAuth);
+document.getElementById("googleRegisterBtn").addEventListener("click", handleGoogleAuth);
 
 // Toggle Forms
 document.getElementById("register-link").addEventListener("click", () => {
@@ -115,24 +110,6 @@ document.getElementById("login-link").addEventListener("click", () => {
 document.getElementById("togglePassword").addEventListener("click", () => {
   const pass = document.getElementById("loginPassword");
   pass.type = pass.type === "password" ? "text" : "password";
-});
-
-// Forgot password handler
-document.getElementById("forgotPasswordLink").addEventListener("click", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("loginEmail").value;
-
-  if (!email) {
-    alert("Please enter your email to reset your password.");
-    return;
-  }
-
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset email sent to " + email);
-  } catch (error) {
-    alert("Error sending password reset email: " + error.message);
-  }
 });
 
 // Enter key navigation (Login)
@@ -176,14 +153,5 @@ document.getElementById("regConfirmPassword").addEventListener("keydown", (e) =>
   if (e.key === "Enter") {
     e.preventDefault();
     document.getElementById("registerBtn").click();
-  }
-});
-
-// Load remembered username
-window.addEventListener("DOMContentLoaded", () => {
-  const remembered = localStorage.getItem("rememberedUsername");
-  if (remembered) {
-    document.getElementById("loginEmail").value = remembered;
-    document.getElementById("rememberUsername").checked = true;
   }
 });
