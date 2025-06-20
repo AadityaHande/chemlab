@@ -1,126 +1,129 @@
-/* Reset */
+/* Base Reset */
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
 }
 
 body {
-  background-color: #f4f6f8;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-/* Container */
+/* Container Layout */
 .container {
-  width: 100%;
-  max-width: 400px;
-  padding: 30px;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 420px;
+  padding: 30px;
   position: relative;
-  overflow: hidden;
-  transition: 0.4s ease-in-out;
 }
 
-/* Form containers */
+/* Form Container Styles */
 .form-container {
   display: none;
   flex-direction: column;
-  gap: 15px;
 }
 
 .form-container.active {
   display: flex;
 }
 
-/* Headings */
 h2 {
   text-align: center;
+  margin-bottom: 20px;
   color: #333;
-  margin-bottom: 10px;
 }
 
 /* Inputs */
-input {
-  padding: 12px 15px;
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 12px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  outline: none;
+  border-radius: 8px;
   font-size: 15px;
-  transition: border-color 0.3s;
+  width: 100%;
+  transition: 0.2s ease;
 }
 
 input:focus {
   border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
 }
 
 /* Buttons */
 .btn,
 .google-btn {
-  padding: 12px;
   background-color: #007bff;
+  color: #fff;
   border: none;
-  color: white;
-  font-weight: 600;
-  border-radius: 6px;
+  padding: 12px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  font-size: 15px;
+  margin-top: 10px;
+  transition: background 0.2s ease, transform 0.1s ease;
+  width: 100%;
 }
 
 .btn:hover,
 .google-btn:hover {
   background-color: #0056b3;
+  transform: translateY(-1px);
 }
 
-/* Google button */
 .google-btn {
   background-color: #db4437;
 }
 
 .google-btn:hover {
-  background-color: #c1351d;
+  background-color: #c23321;
 }
 
-/* Link prompts */
-p {
-  text-align: center;
-  font-size: 14px;
-  color: #555;
-}
-
-p a {
+/* Links & Paragraphs */
+a {
   color: #007bff;
   text-decoration: none;
-  font-weight: 500;
 }
 
-p a:hover {
+a:hover {
   text-decoration: underline;
 }
 
-/* Password toggle eye */
-#togglePassword {
+p {
+  margin-top: 10px;
   font-size: 14px;
-  color: #888;
+  color: #555;
+  text-align: center;
 }
 
-#togglePassword:hover {
-  color: #333;
+/* Checkbox Section */
+label {
+  font-size: 14px;
+  color: #444;
+  margin-top: 6px;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
+input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
   .container {
     padding: 20px;
-    max-width: 90%;
   }
 
-  input, .btn, .google-btn {
-    font-size: 14px;
+  h2 {
+    font-size: 22px;
   }
 }
