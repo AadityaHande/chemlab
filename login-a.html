@@ -16,6 +16,7 @@
       <input type="text" id="regUsername" placeholder="Username">
       <input type="email" id="regEmail" placeholder="Email">
       <input type="password" id="regPassword" placeholder="Password">
+      <input type="password" id="regConfirmPassword" placeholder="Confirm Password">
       <button class="btn" id="registerBtn">Register</button>
       <p>or register with social platforms</p>
       <button id="googleRegisterBtn" class="google-btn">Register with Google</button>
@@ -33,10 +34,20 @@
           👁️
         </button>
       </div>
-      <button class="btn" id="loginBtn">Login</button>
-      <p>Forgot password?</p>
-      <p>or login with social platforms</p>
+
+      <div style="text-align: left; margin-top: 10px;">
+        <label><input type="checkbox" id="rememberMe"> Remember Me</label><br>
+        <label><input type="checkbox" id="rememberUsername"> Remember Username</label><br>
+        <a href="#" id="forgotPasswordLink">Forgotten your username or password?</a>
+      </div>
+
+      <button class="btn" id="loginBtn" style="margin-top: 10px;">Login</button>
+
+      <p style="font-size: 0.85em; margin-top: 20px;">Cookies must be enabled in your browser</p>
+      <p style="font-size: 0.85em;">Log in using your account on:</p>
+
       <button id="googleLoginBtn" class="google-btn">Login with Google</button>
+
       <p>Don't have an account? <a href="#" id="register-link">Register</a></p>
     </div>
 
