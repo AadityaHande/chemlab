@@ -2,50 +2,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login & Register | Chemical Tracker</title>
-  <link rel="stylesheet" href="login.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login & Register | Chem Lab Manager</title>
+  <link rel="stylesheet" href="login.css" />
 </head>
-<body onload="document.getElementById('loginEmail').focus();">
-  <div class="container">
+<body>
+  <main class="container">
 
-    <!-- Registration Form -->
-    <div class="form-container register-container">
-      <h2>Register</h2>
-      <input type="text" id="regUsername" placeholder="Username" required>
-      <input type="email" id="regEmail" placeholder="Email" required>
-      <input type="password" id="regPassword" placeholder="Password" required>
-      <input type="password" id="regConfirmPassword" placeholder="Confirm Password" required>
-      <button class="btn" id="registerBtn">Register</button>
-      <p>or register with social platforms</p>
-      <button id="googleRegisterBtn" class="google-btn">Register with Google</button>
-      <p>Already have an account? <a href="#" id="login-link">Login</a></p>
-    </div>
+    <!-- 🔐 Login Section -->
+    <section id="login-box" class="form-box active">
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Please login to your account</p>
 
-    <!-- Login Form -->
-    <div class="form-container login-container active">
-      <h2>Login</h2>
-      <input type="email" id="loginEmail" placeholder="Email" required>
-      <div style="position: relative;">
-        <input type="password" id="loginPassword" placeholder="Password" style="padding-right: 40px;" required>
-        <button type="button" id="togglePassword" title="Show/Hide Password"
-          style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
-          👁️
-        </button>
-      </div>
+      <form id="login-form" onsubmit="return false;">
+        <label for="login-email">Email or Username</label>
+        <input type="text" id="login-email" placeholder="Enter your email or username" autocomplete="username" required />
 
-      <div style="margin-top: 10px; text-align: left;">
-        <label><input type="checkbox" id="rememberMe"> Remember Me</label>
-      </div>
+        <label for="login-password">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password" required />
+          <span class="toggle-password" onclick="togglePassword('login-password', this)">👁</span>
+        </div>
 
-      <button class="btn" id="loginBtn">Login</button>
-      <p><a href="#" id="forgotPasswordLink">Forgot password?</a></p>
-      <p>or login with social platforms</p>
-      <button id="googleLoginBtn" class="google-btn">Login with Google</button>
-      <p>Don't have an account? <a href="#" id="register-link">Register</a></p>
-    </div>
+        <div class="options">
+          <label><input type="checkbox" id="rememberMe" /> Remember Me</label>
+          <a href="#" onclick="resetPassword()">Forgot Password?</a>
+        </div>
 
-  </div>
+        <button type="submit" onclick="login()">Login</button>
+        <div class="divider"><span>or</span></div>
+        <button type="button" class="google-btn" onclick="googleLogin()">Sign in with Google</button>
+      </form>
+
+      <p class="switch-link">Don’t have an account? <a href="#" onclick="toggleBox()">Register here</a></p>
+    </section>
+
+    <!-- 📝 Registration Section -->
+    <section id="register-box" class="form-box">
+      <h1>Create Account</h1>
+      <p class="subtitle">Join the Chem Lab Manager</p>
+
+      <form id="register-form" onsubmit="return false;">
+        <label for="register-username">Username</label>
+        <input type="text" id="register-username" placeholder="Choose a username" required />
+
+        <label for="register-email">Email</label>
+        <input type="email" id="register-email" placeholder="Enter your email" required autocomplete="email" />
+
+        <label for="register-password">Password</label>
+        <div class="password-wrapper">
+          <input type="password" id="register-password" placeholder="Create a password" autocomplete="new-password" required />
+          <span class="toggle-password" onclick="togglePassword('register-password', this)">👁</span>
+        </div>
+        <button type="submit" onclick="register()">Register</button>
+      </form>
+      <p class="switch-link">Already have an account? <a href="#" onclick="toggleBox()">Login here</a></p>
+    </section>
+  </main>
   <script type="module" src="login.js"></script>
 </body>
 </html>
