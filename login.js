@@ -125,17 +125,20 @@ window.googleLogin = async function () {
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) {
-      // Add new Google user with guest role
-      await setDoc(userRef, {
-        email: user.email,
-        role: "guest"
-      });
-    } else {
-      const role = userSnap.data().role;
-      if (role === "teacher") {
-        // Auto-fix bad role
-        await setDoc(userRef, { ...userSnap.data(), role: "guest" });
-      }
+  await setDoc(doc(db, "users", user.uid), {
+    email: user.email,
+    role: "guest"
+  });
+} else {
+  const existingData = userSnap.data();
+  const role = existingData.role;
+
+  if (role === "teacher" || !role) {
+    await setDoc(doc(db, "users", user.uid), {
+      ...existingData,
+      role: "guest"
+    }, { merge: true });
+  }
     }
 
     window.location.href = "homepage.html";
