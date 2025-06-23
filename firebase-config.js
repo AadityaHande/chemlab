@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCBXje6fKRL73zosDAyoaOjgWqZMTDtAKk",
   authDomain: "labchem-tracker.firebaseapp.com",
   projectId: "labchem-tracker",
-  storageBucket: "labchem-tracker.firebasestorage.app",
+  storageBucket: "labchem-tracker.appspot.com",  
   messagingSenderId: "313862849960",
   appId: "1:313862849960:web:94f024f262154389a9899d"
 };
