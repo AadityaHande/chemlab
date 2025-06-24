@@ -1,5 +1,6 @@
 // login.js
-import { auth, db } from "./firebase-config.js";
+import { auth, db } from './firebase-config.js';
+
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -7,173 +8,119 @@ import {
   signInWithPopup,
   sendPasswordResetEmail,
   setPersistence,
-  browserSessionPersistence,
-  browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  browserLocalPersistence,
+  browserSessionPersistence
+} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
 
 import {
   doc,
   setDoc,
-  getDoc,
-  collection,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  getDoc
+} from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
+// FORM REFERENCES
+const loginForm = document.getElementById('login-form');
+const registerForm = document.getElementById('register-form');
+const toggleLinks = document.querySelectorAll('.toggle-link');
+const rememberMeLogin = document.getElementById('rememberLogin');
+const rememberMeRegister = document.getElementById('rememberRegister');
 
-// 🔁 Toggle Login <-> Register
-window.toggleBox = function () {
-  const loginBox = document.getElementById("login-box");
-  const registerBox = document.getElementById("register-box");
+// 1️⃣ TOGGLE BETWEEN LOGIN AND REGISTER
+toggleLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.container').classList.toggle('active');
+  });
+});
 
-  loginBox.classList.toggle("active");
-  registerBox.classList.toggle("active");
-};
+// 2️⃣ PASSWORD VISIBILITY TOGGLE
+document.querySelectorAll('.toggle-password').forEach(icon => {
+  icon.addEventListener('click', () => {
+    const input = icon.previousElementSibling;
+    if (input.type === 'password') {
+      input.type = 'text';
+      icon.textContent = '🙈';
+    } else {
+      input.type = 'password';
+      icon.textContent = '👁️';
+    }
+  });
+});
 
-
-// 👁 Toggle Password Visibility
-window.togglePassword = function (inputId, eyeIcon) {
-  const field = document.getElementById(inputId);
-  if (field.type === "password") {
-    field.type = "text";
-    eyeIcon.textContent = "🙈";
-  } else {
-    field.type = "password";
-    eyeIcon.textContent = "👁";
-  }
-};
-
-
-// 🔐 Email/Password Login
-window.login = async function () {
-  const emailOrUsername = document.getElementById("login-email").value.trim();
-  const password = document.getElementById("login-password").value;
-  const rememberMe = document.getElementById("rememberMe").checked;
-
-  const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
-  await setPersistence(auth, persistence);
+// 3️⃣ LOGIN WITH EMAIL/PASSWORD
+loginForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = loginForm.email.value;
+  const password = loginForm.password.value;
+  const persistence = rememberMeLogin.checked ? browserLocalPersistence : browserSessionPersistence;
 
   try {
-    let email = emailOrUsername;
-
-    // Check if user entered a username instead of email
-    if (!email.includes("@")) {
-      const usersSnapshot = await findUserByUsername(emailOrUsername);
-      if (!usersSnapshot) throw new Error("Username not found.");
-      email = usersSnapshot;
-    }
-
+    await setPersistence(auth, persistence);
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "homepage.html";
-  } catch (err) {
-    alert("Login Error: " + err.message);
+    window.location.href = 'homepage.html';
+  } catch (error) {
+    alert("Login Error: " + error.message);
   }
-};
+});
 
-
-// 📝 Register New User
-window.register = async function () {
-  const username = document.getElementById("register-username").value.trim();
-  const email = document.getElementById("register-email").value.trim();
-  const password = document.getElementById("register-password").value;
-
-  if (username.includes("@")) {
-    alert("Username cannot contain '@'");
-    return;
-  }
+// 4️⃣ REGISTER NEW USER
+registerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = registerForm.email.value;
+  const password = registerForm.password.value;
+  const persistence = rememberMeRegister.checked ? browserLocalPersistence : browserSessionPersistence;
 
   try {
-    const userExists = await usernameTaken(username);
-    if (userExists) {
-      alert("Username already taken.");
-      return;
-    }
-
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    await setDoc(doc(db, "users", cred.user.uid), {
-      username,
-      email,
+    await setPersistence(auth, persistence);
+    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Save to Firestore with role
+    await setDoc(doc(db, "users", userCred.user.uid), {
+      email: email,
       role: "guest"
     });
 
-    window.location.href = "homepage.html";
-  } catch (err) {
-    alert("Registration Error: " + err.message);
+    window.location.href = 'homepage.html';
+  } catch (error) {
+    alert("Registration Error: " + error.message);
   }
-};
+});
 
+// 5️⃣ GOOGLE SIGN-IN FOR BOTH LOGIN/REGISTER
+document.querySelectorAll('.google-btn').forEach(button => {
+  button.addEventListener('click', async () => {
+    const provider = new GoogleAuthProvider();
 
-// 🔁 Forgot Password via Prompt
-window.resetPassword = async function () {
-  const email = prompt("Enter your email to receive a reset link:");
-  if (!email) return;
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset email sent.");
-  } catch (err) {
-    alert("Reset Error: " + err.message);
-  }
-};
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
 
-// 🔐 Google Login 
-window.googleLogin = async function () {
-  const provider = new GoogleAuthProvider();
+      // Only add new Google user if not already present
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          email: user.email
+        });
+      }
 
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    const uid = user.uid;
-
-    const userRef = doc(db, "users", uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      // First-time Google user — add with "guest" role
-      await setDoc(userRef, {
-        email: user.email,
-        role: "guest"
-      });
+      window.location.href = 'homepage.html';
+    } catch (error) {
+      alert("Google Sign-in Error: " + error.message);
     }
+  });
+});
 
-    // Never modify roles for existing users
-    window.location.href = "homepage.html";
+// 6️⃣ FORGOT PASSWORD LINK
+document.getElementById('forgotPassword').addEventListener('click', async () => {
+  const email = prompt("Enter your email to receive a password reset link:");
 
-  } catch (err) {
-    console.error("Google Sign-In Error:", err);
-    alert("Google Sign-In failed: " + (err.message || err.code));
-  }
-};
-
-// 🔎 Utility: Check if username is taken
-async function usernameTaken(username) {
-  const users = await fetchUserCollection();
-  return Object.values(users).some(user => user.username?.toLowerCase() === username.toLowerCase());
-}
-
-// 🔎 Utility: Get email from username
-async function findUserByUsername(username) {
-  const users = await fetchUserCollection();
-  for (let uid in users) {
-    if (users[uid].username?.toLowerCase() === username.toLowerCase()) {
-      return users[uid].email;
+  if (email) {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset email sent!");
+    } catch (error) {
+      alert("Error: " + error.message);
     }
   }
-  return null;
-}
-
-// 📦 Firestore Utility 
-async function fetchUserCollection() {
-  const userMap = {};
-
-  try {
-    const userDocs = await getDocs(collection(db, "users"));
-    userDocs.forEach(docSnap => {
-      userMap[docSnap.id] = docSnap.data();
-    });
-  } catch (err) {
-    console.error("Failed to fetch users:", err);
-    alert("Error fetching user list.");
-  }
-
-  return userMap;
-}
+});
