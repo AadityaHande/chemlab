@@ -1,212 +1,143 @@
-/* Reset */
+/* RESET & BASE STYLES */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Body Layout */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: #f0f2f5;
+  background-color: #f8f9fa;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
   color: #333;
 }
 
-/* Main Container */
+/* MAIN CONTAINER */
 .container {
-  width: 100%;
-  max-width: 400px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  padding: 2rem;
-  overflow: hidden;
   position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: 0.4s ease;
+  padding: 2rem;
 }
 
-/* Form Box Shared */
-.form-box {
+/* TOGGLE VISIBILITY */
+.form-container {
   display: none;
-  flex-direction: column;
-  animation: fadeIn 0.4s ease;
 }
-
-.form-box.active {
-  display: flex;
+.container.active .login-container {
+  display: none;
 }
-
-/* Heading Styles */
-h1 {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
-  text-align: center;
+.container.active .register-container {
+  display: block;
 }
-
-.subtitle {
-  font-size: 0.95rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #777;
-}
-
-/* Form Inputs */
-form label {
-  font-weight: 500;
-  margin-bottom: 0.3rem;
+.container:not(.active) .login-container {
   display: block;
 }
 
-form input {
-  width: 100%;
-  padding: 0.65rem 0.8rem;
+/* FORM STYLES */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+h2 {
+  text-align: center;
   margin-bottom: 1rem;
+  color: #222;
+}
+
+input {
+  padding: 0.75rem 1rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.2s ease;
-  background: #fff;
+  transition: border-color 0.3s ease;
 }
 
-form input:focus {
+input:focus {
+  border-color: #003366;
   outline: none;
-  border-color: #4a90e2;
-  box-shadow: 0 0 3px rgba(74, 144, 226, 0.3);
 }
 
-/* Password Visibility */
+/* PASSWORD WRAPPER */
 .password-wrapper {
   position: relative;
 }
-
 .toggle-password {
   position: absolute;
-  top: 50%;
   right: 12px;
+  top: 50%;
   transform: translateY(-50%);
-  cursor: pointer;
   font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
   color: #888;
 }
 
-/* Options Row */
-.options {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
-}
-
-.options a {
-  color: #4a90e2;
-  text-decoration: none;
-}
-
-.options a:hover {
-  text-decoration: underline;
-}
-
-/* Buttons */
+/* BUTTON STYLES */
 button {
-  width: 100%;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
-  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s ease;
+  background-color: #003366; /* Navy */
+  color: #fff;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  opacity: 0.95;
+  background-color: #002244;
 }
 
-/* Primary Button */
-button[type="submit"] {
-  background-color: #4a90e2;
-  color: #fff;
-  margin-top: 0.2rem;
-}
-
-/* Google Button */
+/* GOOGLE BUTTON */
 .google-btn {
-  background-color: #fff;
-  color: #444;
-  border: 1px solid #ccc;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  background-color: #db4437;
 }
-
 .google-btn:hover {
-  background: #f5f5f5;
+  background-color: #b7352c;
 }
 
-/* Divider */
-.divider {
+/* CHECKBOX & LINK */
+label {
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  margin: 1rem 0;
-  color: #aaa;
-  font-size: 0.9rem;
+  gap: 0.4rem;
+  color: #555;
 }
 
-.divider::before,
-.divider::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: #ddd;
-  margin: 0 10px;
-}
-
-/* Switch Link */
-.switch-link {
+a, .toggle-link {
+  color: #003366;
   font-size: 0.9rem;
   text-align: center;
-  margin-top: 1rem;
-}
-
-.switch-link a {
-  color: #4a90e2;
+  cursor: pointer;
+  display: block;
+  margin-top: 0.5rem;
   text-decoration: none;
-  font-weight: 500;
 }
 
-.switch-link a:hover {
+a:hover, .toggle-link:hover {
   text-decoration: underline;
 }
 
-/* Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive */
-@media (max-width: 480px) {
+/* MEDIA QUERIES */
+@media (max-width: 500px) {
   .container {
     padding: 1.5rem;
   }
 
-  h1 {
-    font-size: 1.5rem;
+  input, button {
+    font-size: 0.95rem;
   }
-
-  .subtitle {
-    font-size: 0.85rem;
-  }
-  }
+}
