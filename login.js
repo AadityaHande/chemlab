@@ -14,7 +14,9 @@ import {
 import {
   doc,
   setDoc,
-  getDoc
+  getDoc,
+  collection,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 
@@ -169,9 +171,6 @@ async function findUserByUsername(username) {
 async function fetchUserCollection() {
   const snapshot = await getDoc(doc(db, "_meta", "userIndex")); // optional optimization
   const userMap = {};
-
-  const usersRef = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-  const { collection, getDocs } = usersRef;
 
   const userDocs = await getDocs(collection(db, "users"));
   userDocs.forEach(doc => {
