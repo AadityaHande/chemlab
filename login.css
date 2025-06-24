@@ -1,143 +1,209 @@
-/* RESET & BASE STYLES */
+/* === RESET & BASE STYLES === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+}
+
+:root {
+  --primary-color: #004080;
+  --primary-hover: #0059b3;
+  --secondary-color: #ffffff;
+  --text-color: #1c1c1c;
+  --bg-color: #f4f7fa;
+  --border-radius: 12px;
+  --transition: 0.3s ease;
+  --input-border: #ccc;
+  --input-focus: #004080;
+  --error-color: #d8000c;
+  --shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 }
 
 body {
-  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
   padding: 1rem;
+}
+
+/* === CONTAINER === */
+.auth-container {
+  background-color: var(--secondary-color);
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem 2.2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+/* === TOGGLE BUTTONS === */
+.form-toggle {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.toggle-btn {
+  flex: 1;
+  text-align: center;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.8rem 0;
+  cursor: pointer;
+  color: #666;
+  border-bottom: 3px solid transparent;
+  transition: var(--transition);
+}
+
+.toggle-btn.active {
+  color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* === FORMS === */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+/* === LABELS & INPUTS === */
+label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  display: block;
   color: #333;
 }
 
-/* MAIN CONTAINER */
-.container {
-  position: relative;
+input[type="email"],
+input[type="password"] {
   width: 100%;
-  max-width: 420px;
-  background: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: 0.4s ease;
-  padding: 2rem;
-}
-
-/* TOGGLE VISIBILITY */
-.form-container {
-  display: none;
-}
-.container.active .login-container {
-  display: none;
-}
-.container.active .register-container {
-  display: block;
-}
-.container:not(.active) .login-container {
-  display: block;
-}
-
-/* FORM STYLES */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 1rem;
-  color: #222;
-}
-
-input {
-  padding: 0.75rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--input-border);
+  outline: none;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: border-color var(--transition);
 }
 
 input:focus {
-  border-color: #003366;
-  outline: none;
+  border-color: var(--input-focus);
 }
 
-/* PASSWORD WRAPPER */
+/* === PASSWORD WRAPPER === */
 .password-wrapper {
   position: relative;
 }
+
 .toggle-password {
   position: absolute;
-  right: 12px;
   top: 50%;
+  right: 1rem;
   transform: translateY(-50%);
-  font-size: 1rem;
+  color: #999;
   cursor: pointer;
-  user-select: none;
-  color: #888;
-}
-
-/* BUTTON STYLES */
-button {
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 8px;
   font-size: 1rem;
-  cursor: pointer;
-  background-color: #003366; /* Navy */
-  color: #fff;
-  transition: background-color 0.3s ease;
+  transition: color var(--transition);
 }
 
-button:hover {
-  background-color: #002244;
+.toggle-password:hover {
+  color: var(--primary-color);
 }
 
-/* GOOGLE BUTTON */
-.google-btn {
-  background-color: #db4437;
-}
-.google-btn:hover {
-  background-color: #b7352c;
-}
-
-/* CHECKBOX & LINK */
-label {
-  font-size: 0.9rem;
+/* === REMEMBER ME & FORGOT === */
+.remember-forgot {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.4rem;
-  color: #555;
-}
-
-a, .toggle-link {
-  color: #003366;
   font-size: 0.9rem;
-  text-align: center;
-  cursor: pointer;
-  display: block;
-  margin-top: 0.5rem;
-  text-decoration: none;
 }
 
-a:hover, .toggle-link:hover {
+.remember-forgot a {
+  text-decoration: none;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.remember-forgot a:hover {
   text-decoration: underline;
 }
 
-/* MEDIA QUERIES */
-@media (max-width: 500px) {
-  .container {
-    padding: 1.5rem;
+/* === BUTTON STYLES === */
+.btn {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.btn.blue {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn.blue:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.02);
+}
+
+.btn.google {
+  background-color: white;
+  color: #444;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.btn.google:hover {
+  background-color: #f1f1f1;
+  transform: scale(1.02);
+}
+
+/* === FORM SWITCH === */
+.hidden {
+  display: none;
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === MEDIA QUERIES === */
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 1.5rem 1.2rem;
   }
 
-  input, button {
+  .btn,
+  .toggle-btn {
     font-size: 0.95rem;
+  }
+
+  .auth-form h2 {
+    font-size: 1.3rem;
   }
 }
