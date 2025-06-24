@@ -167,15 +167,19 @@ async function findUserByUsername(username) {
   return null;
 }
 
-// 📦 Firestore Utility
+// 📦 Firestore Utility 
 async function fetchUserCollection() {
-  const snapshot = await getDoc(doc(db, "_meta", "userIndex")); // optional optimization
   const userMap = {};
 
-  const userDocs = await getDocs(collection(db, "users"));
-  userDocs.forEach(doc => {
-    userMap[doc.id] = doc.data();
-  });
+  try {
+    const userDocs = await getDocs(collection(db, "users"));
+    userDocs.forEach(docSnap => {
+      userMap[docSnap.id] = docSnap.data();
+    });
+  } catch (err) {
+    console.error("Failed to fetch users:", err);
+    alert("Error fetching user list.");
+  }
 
   return userMap;
 }
