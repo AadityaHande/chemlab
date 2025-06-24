@@ -1,6 +1,4 @@
-// login.js
 import { auth, db } from './firebase-config.js';
-
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -8,8 +6,8 @@ import {
   signInWithPopup,
   sendPasswordResetEmail,
   setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence
+  browserSessionPersistence,
+  browserLocalPersistence
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
 
 import {
@@ -18,109 +16,127 @@ import {
   getDoc
 } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
 
-// FORM REFERENCES
+// === DOM ELEMENTS ===
+const toggleLoginBtn = document.getElementById('toggle-login');
+const toggleRegisterBtn = document.getElementById('toggle-register');
 const loginForm = document.getElementById('login-form');
 const registerForm = document.getElementById('register-form');
-const toggleLinks = document.querySelectorAll('.toggle-link');
-const rememberMeLogin = document.getElementById('rememberLogin');
-const rememberMeRegister = document.getElementById('rememberRegister');
+const rememberCheckbox = document.getElementById('remember-me');
+const forgotPasswordLink = document.getElementById('forgot-password-link');
 
-// 1️⃣ TOGGLE BETWEEN LOGIN AND REGISTER
-toggleLinks.forEach(link => {
-  link.addEventListener('click', () => {
-    document.querySelector('.container').classList.toggle('active');
-  });
+const googleLoginBtn = document.getElementById('google-login');
+const googleRegisterBtn = document.getElementById('google-register');
+
+const passwordToggles = document.querySelectorAll('.toggle-password');
+
+// === FORM TOGGLE ===
+toggleLoginBtn.addEventListener('click', () => {
+  toggleLoginBtn.classList.add('active');
+  toggleRegisterBtn.classList.remove('active');
+  loginForm.classList.remove('hidden');
+  registerForm.classList.add('hidden');
 });
 
-// 2️⃣ PASSWORD VISIBILITY TOGGLE
-document.querySelectorAll('.toggle-password').forEach(icon => {
+toggleRegisterBtn.addEventListener('click', () => {
+  toggleRegisterBtn.classList.add('active');
+  toggleLoginBtn.classList.remove('active');
+  registerForm.classList.remove('hidden');
+  loginForm.classList.add('hidden');
+});
+
+// === PASSWORD VISIBILITY TOGGLE ===
+passwordToggles.forEach(icon => {
   icon.addEventListener('click', () => {
-    const input = icon.previousElementSibling;
+    const inputId = icon.dataset.target;
+    const input = document.getElementById(inputId);
     if (input.type === 'password') {
       input.type = 'text';
-      icon.textContent = '🙈';
+      icon.classList.remove('fa-eye');
+      icon.classList.add('fa-eye-slash');
     } else {
       input.type = 'password';
-      icon.textContent = '👁️';
+      icon.classList.remove('fa-eye-slash');
+      icon.classList.add('fa-eye');
     }
   });
 });
 
-// 3️⃣ LOGIN WITH EMAIL/PASSWORD
+// === LOGIN FORM SUBMIT ===
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = loginForm.email.value;
-  const password = loginForm.password.value;
-  const persistence = rememberMeLogin.checked ? browserLocalPersistence : browserSessionPersistence;
+  const email = document.getElementById('login-email').value;
+  const password = document.getElementById('login-password').value;
+  const persistence = rememberCheckbox.checked ? browserLocalPersistence : browserSessionPersistence;
 
   try {
     await setPersistence(auth, persistence);
     await signInWithEmailAndPassword(auth, email, password);
     window.location.href = 'homepage.html';
   } catch (error) {
-    alert("Login Error: " + error.message);
+    alert('Login Failed: ' + error.message);
   }
 });
 
-// 4️⃣ REGISTER NEW USER
+// === REGISTER FORM SUBMIT ===
 registerForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const email = registerForm.email.value;
-  const password = registerForm.password.value;
-  const persistence = rememberMeRegister.checked ? browserLocalPersistence : browserSessionPersistence;
+  const email = document.getElementById('register-email').value;
+  const password = document.getElementById('register-password').value;
 
   try {
-    await setPersistence(auth, persistence);
     const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    
-    // Save to Firestore with role
-    await setDoc(doc(db, "users", userCred.user.uid), {
-      email: email,
-      role: "guest"
+    const user = userCred.user;
+
+    // Save user role as 'guest' in Firestore
+    const userRef = doc(db, 'users', user.uid);
+    await setDoc(userRef, {
+      email: user.email,
+      role: 'guest'
     });
 
     window.location.href = 'homepage.html';
   } catch (error) {
-    alert("Registration Error: " + error.message);
+    alert('Registration Failed: ' + error.message);
   }
 });
 
-// 5️⃣ GOOGLE SIGN-IN FOR BOTH LOGIN/REGISTER
-document.querySelectorAll('.google-btn').forEach(button => {
-  button.addEventListener('click', async () => {
-    const provider = new GoogleAuthProvider();
+// === FORGOT PASSWORD ===
+forgotPasswordLink.addEventListener('click', async (e) => {
+  e.preventDefault();
+  const email = prompt('Enter your email to reset password:');
+  if (!email) return;
 
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-
-      // Only add new Google user if not already present
-      if (!userSnap.exists()) {
-        await setDoc(userRef, {
-          email: user.email
-        });
-      }
-
-      window.location.href = 'homepage.html';
-    } catch (error) {
-      alert("Google Sign-in Error: " + error.message);
-    }
-  });
-});
-
-// 6️⃣ FORGOT PASSWORD LINK
-document.getElementById('forgotPassword').addEventListener('click', async () => {
-  const email = prompt("Enter your email to receive a password reset link:");
-
-  if (email) {
-    try {
-      await sendPasswordResetEmail(auth, email);
-      alert("Password reset email sent!");
-    } catch (error) {
-      alert("Error: " + error.message);
-    }
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert('Password reset email sent.');
+  } catch (error) {
+    alert('Failed to send reset email: ' + error.message);
   }
 });
+
+// === GOOGLE LOGIN / REGISTER ===
+async function handleGoogleSignIn() {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+
+    // Add user if doesn't exist
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        email: user.email,
+        role: 'guest'
+      });
+    }
+
+    window.location.href = 'homepage.html';
+  } catch (error) {
+    alert('Google Sign-In Failed: ' + error.message);
+  }
+}
+
+googleLoginBtn.addEventListener('click', handleGoogleSignIn);
+googleRegisterBtn.addEventListener('click', handleGoogleSignIn);
