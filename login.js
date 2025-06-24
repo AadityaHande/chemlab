@@ -115,40 +115,34 @@ window.resetPassword = async function () {
   }
 };
 
-
-// 🔐 Google Login
+// 🔐 Google Login 
 window.googleLogin = async function () {
   const provider = new GoogleAuthProvider();
 
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    const userRef = doc(db, "users", user.uid);
+    const uid = user.uid;
+
+    const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
 
     if (!userSnap.exists()) {
-  await setDoc(doc(db, "users", user.uid), {
-    email: user.email,
-    role: "guest"
-  });
-} else {
-  const existingData = userSnap.data();
-  const role = existingData.role;
-
-  if (role === "teacher" || !role) {
-    await setDoc(doc(db, "users", user.uid), {
-      ...existingData,
-      role: "guest"
-    }, { merge: true });
-  }
+      // First-time Google user — add with "guest" role
+      await setDoc(userRef, {
+        email: user.email,
+        role: "guest"
+      });
     }
 
+    // Never modify roles for existing users
     window.location.href = "homepage.html";
+
   } catch (err) {
-    alert("Google Sign-In Error: " + err.message);
+    console.error("Google Sign-In Error:", err);
+    alert("Google Sign-In failed: " + (err.message || err.code));
   }
 };
-
 
 // 🔎 Utility: Check if username is taken
 async function usernameTaken(username) {
