@@ -2,63 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login & Register | Chem Lab Manager</title>
-  <link rel="stylesheet" href="login.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login & Register | ChemLab Tracker</title>
+
+  <!-- Meta -->
+  <meta name="description" content="Secure login and registration page for ChemLab Tracker">
+  <meta name="theme-color" content="#007bff">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.png" type="image/png">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="login.css">
 </head>
 <body>
+
+  <!-- Fallback if JS is disabled -->
+  <noscript>
+    <p style="text-align:center; color: red;">JavaScript is required to use this application. Please enable it in your browser settings.</p>
+  </noscript>
+
   <main class="container">
+    
+    <!-- Login Form -->
+    <div class="form-container login-container">
+      <form id="login-form" aria-label="Login form">
+        <header><h2>Login</h2></header>
+        
+        <input type="email" name="email" placeholder="Email" required 
+               autocomplete="email" aria-label="Email address" />
 
-    <!-- 🔐 Login Section -->
-    <section id="login-box" class="form-box active">
-      <h1>Welcome Back</h1>
-      <p class="subtitle">Please login to your account</p>
-
-      <form id="login-form" onsubmit="return false;">
-        <label for="login-email">Email or Username</label>
-        <input type="text" id="login-email" placeholder="Enter your email or username" autocomplete="username" required />
-
-        <label for="login-password">Password</label>
         <div class="password-wrapper">
-          <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password" required />
-          <span class="toggle-password" onclick="togglePassword('login-password', this)">👁</span>
+          <input type="password" name="password" placeholder="Password" required 
+                 autocomplete="current-password" aria-label="Password" />
+          <span class="toggle-password" aria-label="Toggle password visibility">👁️</span>
         </div>
 
-        <div class="options">
-          <label><input type="checkbox" id="rememberMe" /> Remember Me</label>
-          <a href="#" onclick="resetPassword()">Forgot Password?</a>
-        </div>
+        <label>
+          <input type="checkbox" id="rememberLogin" /> Remember Me
+        </label>
 
-        <button type="submit" onclick="login()">Login</button>
-        <div class="divider"><span>or</span></div>
-        <button type="button" class="google-btn" onclick="googleLogin()">Sign in with Google</button>
+        <button type="submit" aria-label="Login with email">Login</button>
+        <button type="button" class="google-btn" aria-label="Login with Google">Sign in with Google</button>
+        
+        <a href="#" id="forgotPassword" aria-label="Reset password">Forgot Password?</a>
+        
+        <p>Don't have an account? <span class="toggle-link" role="button" tabindex="0">Register</span></p>
       </form>
+    </div>
 
-      <p class="switch-link">Don’t have an account? <a href="#" onclick="toggleBox()">Register here</a></p>
-    </section>
+    <!-- Register Form -->
+    <div class="form-container register-container">
+      <form id="register-form" aria-label="Register form">
+        <header><h2>Register</h2></header>
+        
+        <input type="email" name="email" placeholder="Email" required 
+               autocomplete="email" aria-label="Email address" />
 
-    <!-- 📝 Registration Section -->
-    <section id="register-box" class="form-box">
-      <h1>Create Account</h1>
-      <p class="subtitle">Join the Chem Lab Manager</p>
-
-      <form id="register-form" onsubmit="return false;">
-        <label for="register-username">Username</label>
-        <input type="text" id="register-username" placeholder="Choose a username" required />
-
-        <label for="register-email">Email</label>
-        <input type="email" id="register-email" placeholder="Enter your email" required autocomplete="email" />
-
-        <label for="register-password">Password</label>
         <div class="password-wrapper">
-          <input type="password" id="register-password" placeholder="Create a password" autocomplete="new-password" required />
-          <span class="toggle-password" onclick="togglePassword('register-password', this)">👁</span>
+          <input type="password" name="password" placeholder="Password" required 
+                 autocomplete="new-password" aria-label="Create password" />
+          <span class="toggle-password" aria-label="Toggle password visibility">👁️</span>
         </div>
-        <button type="submit" onclick="register()">Register</button>
+
+        <label>
+          <input type="checkbox" id="rememberRegister" /> Remember Me
+        </label>
+
+        <button type="submit" aria-label="Register with email">Register</button>
+        <button type="button" class="google-btn" aria-label="Register with Google">Sign up with Google</button>
+        
+        <p>Already have an account? <span class="toggle-link" role="button" tabindex="0">Login</span></p>
       </form>
-      <p class="switch-link">Already have an account? <a href="#" onclick="toggleBox()">Login here</a></p>
-    </section>
+    </div>
+
   </main>
+
   <script type="module" src="login.js"></script>
 </body>
 </html>
